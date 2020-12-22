@@ -1,0 +1,25 @@
+.Nav {
+  box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.16), 0px 4px 4px rgba(0, 0, 0, 0.06),
+    0px 1px 1px rgba(0, 0, 0, 0.12);
+  margin-bottom: 1rem;
+}
+.Nav > ul {
+  list-style: none;
+  display: flex;
+  padding: 1.5rem;
+  margin: 0;
+}
+.Nav > ul > li:not(:last-child) {
+  margin-right: 2rem;
+}
+.Nav > ul > li > a {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.NavItem {
+  color: black;
+}
+.NavItemActive {
+  color: blue;
+}

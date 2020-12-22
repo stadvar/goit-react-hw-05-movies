@@ -1,0 +1,6 @@
+.MovieCard {
+  display: flex;
+}
+.MovieCard > img {
+  margin-right: 20px;
+}

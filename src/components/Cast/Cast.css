@@ -1,0 +1,20 @@
+.AcrotsList {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ActorsItem {
+  margin: 5px;
+  outline: 1px solid gray;
+  flex-basis: calc(100% / 6 - 10px);
+  transition: transform 0.25s ease-in-out;
+}
+
+.ActorsItem:hover {
+  transform: scale(1.01);
+}
+.ActorsItem > img {
+  width: 100px;
+}
