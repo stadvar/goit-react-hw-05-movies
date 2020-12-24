@@ -1,13 +1,40 @@
-import { useEffect, useState } from 'react';
-import { useParams, Route, Link } from 'react-router-dom';
+import { useEffect, useState, lazy, Suspense } from 'react';
+import {
+  useParams,
+  Route,
+  useHistory,
+  useRouteMatch,
+  Switch,
+} from 'react-router-dom';
 import { fetchMovie } from '../../services/fetchAPI';
-import Cast from '../Cast';
-import AdditionNav from '../AdditionNav';
-import MovieCard from '../MovieCard';
-import Reviews from '../Reviews';
 
-export default function MovieDetailsPage() {
+import PropTypes from 'prop-types';
+
+MovieDetailsPage.propTypes = {
+  pathroute: PropTypes.string.isRequired,
+};
+
+// import Cast from '../Cast';
+// import AdditionNav from '../AdditionNav';
+// import MovieCard from '../MovieCard';
+// import Reviews from '../Reviews';
+
+const MovieCard = lazy(() =>
+  import('../MovieCard' /* webpackChunkName: "movie-card" */),
+);
+const AdditionNav = lazy(() =>
+  import('../AdditionNav' /* webpackChunkName: "addition-nav" */),
+);
+const Cast = lazy(() => import('../Cast' /* webpackChunkName: "cast" */));
+const Reviews = lazy(() =>
+  import('../Reviews' /* webpackChunkName: "reviews" */),
+);
+
+export default function MovieDetailsPage({ pathroute }) {
   const { movieId } = useParams();
+  const history = useHistory();
+
+  const { path } = useRouteMatch();
 
   const [film, setFilm] = useState(null);
   useEffect(() => {
@@ -15,27 +42,34 @@ export default function MovieDetailsPage() {
       .then(data => {
         setFilm(data);
       })
-      .catch(error => console.warn(error));
-  }, [movieId]);
+      .catch(error => {
+        history.push('/');
+        console.warn(error);
+      });
+  }, [history, movieId]);
 
   return (
     <div>
-      <Link to="/">{'<-Go back'}</Link>
+      <button onClick={() => history.push(pathroute)}>&#8592; Go back</button>
       {film && (
         <>
-          <MovieCard film={film} />
+          <Suspense fallback={<h2>Loading...</h2>}>
+            <MovieCard film={film} />
+            <hr />
+            <p>Additional information</p>
+            <AdditionNav movieId={movieId} />
+          </Suspense>
           <hr />
-          <p>Additional information</p>
-          <AdditionNav movieId={movieId} />
-          <hr />
-
-          <Route path={`/movies/:movieId/cast`}>
-            <Cast />
-          </Route>
-
-          <Route path={`/movies/:movieId/reviews`}>
-            <Reviews />
-          </Route>
+          <Suspense fallback={<h2>Loading...</h2>}>
+            <Switch>
+              <Route path={`${path}/cast`}>
+                <Cast />
+              </Route>
+              <Route path={`${path}/reviews`}>
+                <Reviews />
+              </Route>
+            </Switch>
+          </Suspense>
         </>
       )}
     </div>
