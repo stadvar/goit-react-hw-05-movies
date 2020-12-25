@@ -1,18 +1,13 @@
-import { useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import {
   useParams,
   Route,
   useHistory,
   useRouteMatch,
   Switch,
+  useLocation,
 } from 'react-router-dom';
 import { fetchMovie } from '../../services/fetchAPI';
-
-import PropTypes from 'prop-types';
-
-MovieDetailsPage.propTypes = {
-  pathroute: PropTypes.string.isRequired,
-};
 
 // import Cast from '../Cast';
 // import AdditionNav from '../AdditionNav';
@@ -30,11 +25,12 @@ const Reviews = lazy(() =>
   import('../Reviews' /* webpackChunkName: "reviews" */),
 );
 
-export default function MovieDetailsPage({ pathroute }) {
+export default function MovieDetailsPage() {
   const { movieId } = useParams();
   const history = useHistory();
-
+  const location = useLocation();
   const { path } = useRouteMatch();
+  const { current } = useRef(location.state);
 
   const [film, setFilm] = useState(null);
   useEffect(() => {
@@ -50,7 +46,9 @@ export default function MovieDetailsPage({ pathroute }) {
 
   return (
     <div>
-      <button onClick={() => history.push(pathroute)}>&#8592; Go back</button>
+      <button onClick={() => history.push(current ? current.from : '/')}>
+        &#8592; Go back
+      </button>
       {film && (
         <>
           <Suspense fallback={<h2>Loading...</h2>}>

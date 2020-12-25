@@ -2,25 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { fetchQuery } from '../../services/fetchAPI';
 
-import PropTypes from 'prop-types';
-
-MoviesPage.propTypes = {
-  updatePath: PropTypes.func.isRequired,
-};
-export default function MoviesPage({ updatePath }) {
+export default function MoviesPage() {
   const history = useHistory();
   const location = useLocation();
-
   let { url } = useRouteMatch();
-
-  const path = location.pathname + location.search;
-
   const [search, setSearch] = useState('');
   const [moviesList, setMoviesList] = useState(null);
 
   const heandleSearch = e => {
     setSearch(e.target.value);
   };
+
   const heandleSubmit = e => {
     e.preventDefault();
     history.push({ ...location, search: `query=${search}` });
@@ -30,8 +22,9 @@ export default function MoviesPage({ updatePath }) {
     if (location.search === '') {
       return;
     }
-    updatePath(path);
+
     const query = new URLSearchParams(location.search).get('query');
+
     fetchQuery(query)
       .then(data => {
         setMoviesList(data.results);
@@ -40,7 +33,7 @@ export default function MoviesPage({ updatePath }) {
       .finally(() => {
         setSearch('');
       });
-  }, [location.search, path, updatePath]);
+  }, [location.search]);
 
   return (
     <>
@@ -58,7 +51,11 @@ export default function MoviesPage({ updatePath }) {
         <ul>
           {moviesList.map(el => (
             <li key={el.id}>
-              <Link to={`${url}/${el.id}`}>{el.original_title}</Link>
+              <Link
+                to={{ pathname: `${url}/${el.id}`, state: { from: location } }}
+              >
+                {el.original_title}
+              </Link>
             </li>
           ))}
         </ul>

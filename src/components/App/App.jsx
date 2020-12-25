@@ -1,6 +1,5 @@
-import { lazy, Suspense, useState } from 'react';
-
-import { Route, Switch } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import './App.css';
 // import MoviesPage from '../MoviesPage';
@@ -17,27 +16,24 @@ const MoviesPage = lazy(() =>
 const MovieDetailsPage = lazy(() =>
   import('../MovieDetailsPage' /* webpackChunkName: "movie-detail-page" */),
 );
+
 function App() {
-  const [path, setPath] = useState('');
-  const updatePath = value => {
-    setPath(value);
-  };
   return (
     <div className="App">
       <Navigate />
       <Suspense fallback={<h1>Loading...</h1>}>
         <Switch>
           <Route path="/" exact>
-            <HomePage updatePath={updatePath} />
-          </Route>
-          <Route path="/movies" exact>
-            <MoviesPage updatePath={updatePath} />
+            <HomePage />
           </Route>
           <Route path="/movies/:movieId">
-            <MovieDetailsPage pathroute={path} />
+            <MovieDetailsPage />
+          </Route>
+          <Route path="/movies">
+            <MoviesPage />
           </Route>
           <Route>
-            <HomePage updatePath={updatePath} />
+            <Redirect to={'/'} />
           </Route>
         </Switch>
       </Suspense>
