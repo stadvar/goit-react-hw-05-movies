@@ -8,13 +8,15 @@ import './App.css';
 import Navigate from '../Navigate';
 
 const HomePage = lazy(() =>
-  import('../HomePage' /* webpackChunkName: "home-page" */),
+  import('../../pages/HomePage' /* webpackChunkName: "home-page" */),
 );
 const MoviesPage = lazy(() =>
-  import('../MoviesPage' /* webpackChunkName: "movie-page" */),
+  import('../../pages/MoviesPage' /* webpackChunkName: "movie-page" */),
 );
 const MovieDetailsPage = lazy(() =>
-  import('../MovieDetailsPage' /* webpackChunkName: "movie-detail-page" */),
+  import(
+    '../../pages/MovieDetailsPage' /* webpackChunkName: "movie-detail-page" */
+  ),
 );
 
 function App() {

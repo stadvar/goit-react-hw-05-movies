@@ -15,14 +15,16 @@ import { fetchMovie } from '../../services/fetchAPI';
 // import Reviews from '../Reviews';
 
 const MovieCard = lazy(() =>
-  import('../MovieCard' /* webpackChunkName: "movie-card" */),
+  import('../../components/MovieCard' /* webpackChunkName: "movie-card" */),
 );
 const AdditionNav = lazy(() =>
-  import('../AdditionNav' /* webpackChunkName: "addition-nav" */),
+  import('../../components/AdditionNav' /* webpackChunkName: "addition-nav" */),
 );
-const Cast = lazy(() => import('../Cast' /* webpackChunkName: "cast" */));
+const Cast = lazy(() =>
+  import('../../components/Cast' /* webpackChunkName: "cast" */),
+);
 const Reviews = lazy(() =>
-  import('../Reviews' /* webpackChunkName: "reviews" */),
+  import('../../components/Reviews' /* webpackChunkName: "reviews" */),
 );
 
 export default function MovieDetailsPage() {
